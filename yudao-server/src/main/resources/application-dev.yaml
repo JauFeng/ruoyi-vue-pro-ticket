@@ -37,7 +37,7 @@ spring:
         time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒
         min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒
         max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒
-        validation-query: SELECT 1 # 配置检测连接是否有效
+        validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效
         test-while-idle: true
         test-on-borrow: false
         test-on-return: false
@@ -45,23 +45,33 @@ spring:
       datasource:
         master:
           name: ruoyi-vue-pro
-          url: jdbc:mysql://400-infra.server.iocoder.cn:3306/${spring.datasource.dynamic.datasource.master.name}?useSSL=false&serverTimezone=CTT&allowPublicKeyRetrieval=true
-          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://192.168.13.118:3306/${spring.datasource.dynamic.datasource.master.name}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true # MySQL Connector/J 8.X 连接的示例
+          #          url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dynamic.datasource.master.name}?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT # MySQL Connector/J 5.X 连接的示例
+          #          url: jdbc:postgresql://127.0.0.1:5432/${spring.datasource.dynamic.datasource.slave.name} # PostgreSQL 连接的示例
+          #          url: jdbc:oracle:thin:@127.0.0.1:1521:xe # Oracle 连接的示例
+          #          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=${spring.datasource.dynamic.datasource.master.name} # SQLServer 连接的示例
           username: root
-          password: 3WLiVUBEwTbvAfsh
-        slave: # 模拟从库，可根据自己需要修改 # 模拟从库，可根据自己需要修改
+          password: root
+        #          username: sa
+        #          password: JSm:g(*%lU4ZAkz06cd52KqT3)i1?H7W
+        slave: # 模拟从库，可根据自己需要修改
           name: ruoyi-vue-pro
-          url: jdbc:mysql://400-infra.server.iocoder.cn:3306/${spring.datasource.dynamic.datasource.slave.name}?useSSL=false&serverTimezone=CTT&allowPublicKeyRetrieval=true
-          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://192.168.13.118:3306/${spring.datasource.dynamic.datasource.slave.name}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true # MySQL Connector/J 8.X 连接的示例
+          #          url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dynamic.datasource.slave.name}?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT # MySQL Connector/J 5.X 连接的示例
+          #          url: jdbc:postgresql://127.0.0.1:5432/${spring.datasource.dynamic.datasource.slave.name} # PostgreSQL 连接的示例
+          #          url: jdbc:oracle:thin:@127.0.0.1:1521:xe # Oracle 连接的示例
+          #          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=${spring.datasource.dynamic.datasource.slave.name} # SQLServer 连接的示例
           username: root
-          password: 3WLiVUBEwTbvAfsh
+          password: root
+  #          username: sa
+  #          password: JSm:g(*%lU4ZAkz06cd52KqT3)i1?H7W
 
   # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
   redis:
-    host: 400-infra.server.iocoder.cn # 地址
-    port: 6379 # 端口
-    database: 1 # 数据库索引
-#    password: 123456 # 密码，建议生产环境开启
+    cluster:
+      nodes: 10.13.13.67:6380,10.13.13.68:6380,10.13.13.70:6380
+    password: XUW$d9kY
+    database: 0
 
 --- #################### 定时任务相关配置 ####################
 
@@ -169,7 +179,7 @@ yudao:
   pay:
     callback-url: http://yunai.natapp1.cc/admin-api/pay/notify/callback
     return-url: http://yunai.natapp1.cc/admin-api/pay/notify/return
-  demo: true # 开启演示模式
+  demo: false # 开启演示模式
 
 justauth:
   enabled: true
